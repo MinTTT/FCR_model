@@ -56,8 +56,11 @@ class FCR_bac():
         sigma, m_rb, gr, mass = sm
         return [self.miu_f * sigma * ((1. - sigma / self.sigma_f) / (1. - sigma / self.gamma)),
                 (self.phi_rb0 / (1. - sigma / self.gamma)) * sigma * m_rb,
-                gr*(self.miu_f * (1 - self.lambda_f / self.lambda_c) - gr),
+                gr * (self.miu_f * (1 - self.lambda_f / self.lambda_c) - gr),
                 self.alphaM_over_alpha * sigma * m_rb]
+
+
+
 
     def integ_sigma(self, t=None):
         if ~(t is None):
@@ -76,20 +79,19 @@ class FCR_bac():
         self.total_j = np.hstack((self.j_t_, self.j_t))
         self.total_j_r = np.hstack((self.j_r_t_, self.j_r_t))
         self.total_lambda = np.hstack((self.lambda_t_, self.lambda_t))
-
         return None
 
+#%%
 
-if __name__ == '__main__':
-    up_shift = FCR_bac([0.3, 1.2])
-    up_shift.integ_sigma(t=np.linspace(0, 8, 5000))
-    sp.whitegrid()
-    fig1, ax = plt.subplots(2, 2)
-    sns.lineplot(x=up_shift.sigma_t, y=up_shift.chi_rb, label='$\chi_{\mathrm{Rb}}$', ax=ax[0, 0])
-    sns.lineplot(x=up_shift.sigma_t, y=up_shift.chi_cat, label='$\chi_{\mathrm{cat}}$', ax=ax[0, 0])
-    sns.lineplot(x=up_shift.t, y=up_shift.sigma_t, label='$\sigma_{\mathrm{t}}$', ax=ax[0, 1])
-    sns.lineplot(x=up_shift.total_t, y=up_shift.total_lambda, label='$\lambda$', ax=ax[1, 0])
-    sns.lineplot(x=up_shift.total_t, y=up_shift.total_j, label='Flux', ax=ax[1, 1])
-    ax[1, 1].set_yscale('log')
-    # ax.set_yscale('log')
-    fig1.show()
+up_shift = FCR_bac([1.0, 0.2])
+up_shift.integ_sigma(t=np.linspace(0, 8, 5000))
+sp.whitegrid()
+fig1, ax = plt.subplots(2, 2)
+sns.lineplot(x=up_shift.sigma_t, y=up_shift.chi_rb, label='$\chi_{\mathrm{Rb}}$', ax=ax[0, 0])
+sns.lineplot(x=up_shift.sigma_t, y=up_shift.chi_cat, label='$\chi_{\mathrm{cat}}$', ax=ax[0, 0])
+sns.lineplot(x=up_shift.t, y=up_shift.sigma_t, label='$\sigma_{\mathrm{t}}$', ax=ax[0, 1])
+sns.lineplot(x=up_shift.total_t, y=up_shift.total_lambda, label='$\lambda$', ax=ax[1, 0])
+sns.lineplot(x=up_shift.total_t, y=up_shift.total_j, label='Flux', ax=ax[1, 1])
+ax[1, 1].set_yscale('log')
+# ax.set_yscale('log')
+fig1.show()
